@@ -1,14 +1,38 @@
-- name: Install Dependencies & Setup Theos
+name: Build DEB Package
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install Dependencies & Setup Theos
         run: |
-          sudo apt-get update
-          sudo apt-get install -y build-essential git perl libssl-dev clang llvm
+          # Cài đặt ldid để ký file deb
+          brew install ldid
           
-          # Tải cctools-port cho Linux để hỗ trợ cross-compile iOS
-          git clone https://github.com/tpoechtrager/cctools-port.git
-          
+          # Clone Theos và SDK
           git clone --recursive https://github.com/theos/theos.git $HOME/theos
           rm -rf $HOME/theos/sdks
           git clone --depth=1 https://github.com/theos/sdks.git $HOME/theos/sdks
           
+          # Cấu hình biến môi trường
           echo "THEOS=$HOME/theos" >> $GITHUB_ENV
           echo "$HOME/theos/bin" >> $GITHUB_PATH
+
+      - name: Build Package
+        run: |
+          make package FINALPACKAGE=1 TARGET=iphone:clang:latest:14.0
+
+      - name: Upload DEB Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: MUHelperPatch-DEB
+          path: packages/*.deb
