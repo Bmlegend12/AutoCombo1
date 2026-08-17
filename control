@@ -1,0 +1,9 @@
+Package: com.yourname.muhelperpatch
+Name: MU Helper PvP Patch
+Depends: mobilesubstrate
+Version: 1.0.0
+Architecture: iphoneos-arm64
+Description: Live Patch Helper PvP
+Maintainer: YourName
+Author: YourName
+Section: Tweaks
