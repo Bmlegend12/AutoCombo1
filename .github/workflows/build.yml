@@ -7,25 +7,17 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Install Dependencies & Setup Theos
+      - name: Setup Theos
         run: |
-          sudo apt-get update
-          sudo apt-get install -y build-essential git perl libssl-dev clang
-          
-          # Clone Theos về thư mục cố định
           git clone --recursive https://github.com/theos/theos.git $HOME/theos
-          
-          # Tải SDK
           rm -rf $HOME/theos/sdks
           git clone --depth=1 https://github.com/theos/sdks.git $HOME/theos/sdks
-          
-          # Ghi biến môi trường THEOS và PATH cho toàn bộ các bước sau
           echo "THEOS=$HOME/theos" >> $GITHUB_ENV
           echo "$HOME/theos/bin" >> $GITHUB_PATH
 
