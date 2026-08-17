@@ -19,8 +19,8 @@ jobs:
           sudo apt-get install -y build-essential git perl libssl-dev clang
           git clone --recursive https://github.com/theos/theos.git $HOME/theos
           
-          # Tải SDK iOS chuẩn bằng git
-          mkdir -p $HOME/theos/sdks
+          # Xoá thư mục sdks mặc định và clone kho SDK mới
+          rm -rf $HOME/theos/sdks
           git clone --depth=1 https://github.com/theos/sdks.git $HOME/theos/sdks
 
       - name: Build Tweak
